@@ -14,7 +14,7 @@ function addStudentToClass(studentName) {
     console.log(`${studentName} has been added to the class`); // Adds queen even if class is full
     return;
   }
-  if (class07Students.length > 6) {
+  if (class07Students.length >= 6) {
     console.log("Cannot add more students to class 07"); // rejects if more than 6 students are been added
     return;
   }
