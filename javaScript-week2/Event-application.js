@@ -11,11 +11,5 @@ function getEventWeekday(numOfDaysToBeAdded) {
       "Saturday",
     ];
     const i = numOfDaysToBeAdded + dayNum; //retuns this if the sum is less than 7
-    if (i >= 7) {
-      let r = i % 7; //retuns this if the sum is more or equal to 7 (dividing by 7 an using the remainder)
-      return namesOfDays[r];
-    } else {
-      return namesOfDays[i];
-    }
-  }
+   return namesOfDays[i % 7]
   console.log(getEventWeekday(200));
