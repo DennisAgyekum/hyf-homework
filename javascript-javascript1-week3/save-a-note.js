@@ -2,9 +2,6 @@ const notes = [];
 
 function saveNote(content, id) {
   notes.push({ content, id });
-  if (!saveNote.content) {
-    alert("Write down a note");
-  }
 }
 saveNote("Pick up groceries", 1);
 saveNote("Do laundry", 2);
@@ -18,9 +15,16 @@ function getNote(id) {
     } else return "ID not found";
   }
 }
+const firstNote = getNote(1);
+console.log(firstNote); // {content: 'Pick up groceries', id: 1}
+
 function logOutNotesFormatted() {
-  notes.forEach((notes) => {
-    return `The note with id: ${notes.id}, has the following note text: ${notes.content}`;
-  });
+  for (let index = 0; index < notes.length; index++) {
+    const { id, content } = notes[index];
+    console.log(
+      `The note with id: ${id}, has the following note text: ${content}`
+    );
+  }
 }
+
 logOutNotesFormatted();
