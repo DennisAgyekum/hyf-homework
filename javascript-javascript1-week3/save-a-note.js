@@ -12,7 +12,7 @@ function getNote(id) {
       return "ERROR: ID must be a number";
     } else if (notes[i].id === id) {
       return notes[i];
-    } else return "ID not found";
+    } else {return "ID not found"};
   }
 }
 const firstNote = getNote(1);
