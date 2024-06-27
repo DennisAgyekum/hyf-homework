@@ -26,8 +26,8 @@ function logOutSeriesText() {
   seriesDurations.forEach((series) => {
     const totalMinutes =
       series.days * 24 * 60 + series.hours * 60 + series.minutes;
-    const yearsInMinutes = age * 365.24 * 1440;
-    const percentageOfYear = (totalMinutes / yearsInMinutes) * 100;
+    const ageInMinutes = age * 365.24 * 1440;
+    const percentageOfYear = (totalMinutes / ageInMinutes) * 100;
     totalSumWatched += percentageOfYear;
     console.log(
       `${series.title} took ${percentageOfYear.toFixed(3)}% of my life`
