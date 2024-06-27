@@ -1,9 +1,6 @@
 const activities = [];
-let limit = 0;
+let limit = 90;
 
-function setLimit(newLimit) {
-  limit = newLimit;
-}
 
 function addActivity(date, activity, duration) {
   activities.push({ date, activity, duration });
@@ -27,8 +24,7 @@ function showStatus() {
     return "You have reached your limit, no more smartphone for you!";
   } else
     return `You have added ${activities.length} activities. They amount to ${totalDuration} min. of usage`;
-}
-setLimit(90);
+  
 console.log(showStatus(activities));
 
 
