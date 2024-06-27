@@ -18,7 +18,7 @@ const names = [
 
 const nameToRemove = "Ahmad";
 
-const indexToRemove = names.indexOf(nameToRemove);
+const indexToRemove !== -1);
 names.splice(indexToRemove, 1);
 
 console.log(`\n${names}\n`);
