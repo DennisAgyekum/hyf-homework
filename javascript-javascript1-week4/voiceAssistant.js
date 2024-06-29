@@ -95,28 +95,24 @@ function getResult(command) {
   }
 
   let result;
-  switch (operator) {
-    case "+":
-      result = operand1 + operand2;
-      break;
-    case "-":
-      result = operand1 - operand2;
-      break;
-    case "*":
-      result = operand1 * operand2;
-      break;
-    case "/":
-      if (operand2 === 0) {
-        return "Division by zero is not allowed";
-      }
-      result = operand1 / operand2;
-      break;
-    default:
-      return "Invalid mathematical expression";
+  if (operator === "+") {
+    result = operand1 + operand2;
+  } else if (operator === "-") {
+    result = operand1 - operand2;
+  } else if (operator === "*") {
+    result = operand1 * operand2;
+  } else if (operator === "/") {
+    if (operand2 === 0) {
+      return "Division by zero is not allowed";
+    }
+    result = operand1 / operand2;
+  } else {
+    return "Invalid mathematical expression";
   }
 
   return `The result of the expression is ${result}`;
 }
+
 function setTimer(command) {
   const timeStr = command
     .replace("Set a timer for", "")
