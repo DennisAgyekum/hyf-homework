@@ -95,41 +95,25 @@ function getDate() {
 function getResult(command) {
   const expression = command.replace(/what is/i, "").trim();
 
-  let operator;
   if (expression.includes("+")) {
     operator = "+";
+    const [operand1, operand2] = expression.split(operator).map(Number);
+    result = operand1 + operand2;
   } else if (expression.includes("-")) {
     operator = "-";
+    const [operand1, operand2] = expression.split(operator).map(Number);
+    result = operand1 - operand2;
   } else if (expression.includes("*")) {
     operator = "*";
+    const [operand1, operand2] = expression.split(operator).map(Number);
+    result = operand1 * operand2;
   } else if (expression.includes("/")) {
     operator = "/";
-  } else {
-    return "Invalid mathematical expression";
-  }
-
-  const [operand1, operand2] = expression.split(operator).map(Number);
-
-  if (isNaN(operand1) || isNaN(operand2)) {
-    return "Invalid mathematical expression";
-  }
-
-  let result;
-  if (operator === "+") {
-    result = operand1 + operand2;
-  } else if (operator === "-") {
-    result = operand1 - operand2;
-  } else if (operator === "*") {
-    result = operand1 * operand2;
-  } else if (operator === "/") {
-    if (operand2 === 0) {
-      return "Division by zero is not allowed";
-    }
+    const [operand1, operand2] = expression.split(operator).map(Number);
     result = operand1 / operand2;
   } else {
     return "Invalid mathematical expression";
   }
-
   return `The result of the expression is ${result}`;
 }
 
