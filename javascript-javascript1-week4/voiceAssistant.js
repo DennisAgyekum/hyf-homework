@@ -2,24 +2,32 @@ let nameOfPerson = "";
 let toDoList = [];
 
 const commands = {
-  "Hello my name is": welcomeWithName,
-  "What is my name": getName,
-  Add: addToDo,
-  Remove: removeToDo,
-  "What is on my todo?": getToDo,
-  "What day is it today?": getDate,
-  "What is": getResult,
-  "Set a timer for": setTimer,
-  "Tell me a evening jokes": tellJokes,
+  "hello my name is": welcomeWithName,
+  "what is my name": getName,
+  add: addToDo,
+  remove: removeToDo,
+  "what is on my todo?": getToDo,
+  "what day is it today?": getDate,
+  "what is": getResult,
+  "set a timer for": setTimer,
+  "tell me a evening jokes": tellJokes,
 };
 
 function welcomeWithName(command) {
-  const userName = command.replace("Hello my name is", "").trim();
-  if (nameOfPerson) {
-    return `You already mentioned your name is: ${nameOfPerson}`;
+  const lowerCaseCommand = command.toLowerCase();
+  const prefix = "hello my name is";
+
+  if (lowerCaseCommand.startsWith(prefix)) {
+    const userName = command.slice(prefix.length).trim();
+
+    if (nameOfPerson) {
+      return `You already mentioned your name is: ${nameOfPerson}`;
+    } else {
+      nameOfPerson = userName;
+      return `Nice to meet you, ${userName}.`;
+    }
   } else {
-    nameOfPerson = userName;
-    return `Nice to meet you, ${userName}.`;
+    return "Unknown command.";
   }
 }
 
@@ -32,8 +40,13 @@ function getName() {
 }
 
 function addToDo(command) {
-  const task = command.replace("Add", "").replace("to my todo", "").trim();
-  if (toDoList.includes(task)) {
+  const task = command
+    .replace(/add/i, "")
+    .replace(/to my todo/i, "")
+    .trim();
+  const taskLower = task.toLowerCase();
+
+  if (toDoList.map((item) => item.toLowerCase()).includes(taskLower)) {
     return `The task "${task}" is already added.`;
   } else {
     toDoList.push(task);
@@ -42,8 +55,15 @@ function addToDo(command) {
 }
 
 function removeToDo(command) {
-  const task = command.replace("Remove", "").replace("from my todo", "").trim();
-  const taskIndex = toDoList.indexOf(task);
+  const task = command
+    .replace(/remove/i, "")
+    .replace(/from my todo/i, "")
+    .trim();
+  const taskLower = task.toLowerCase();
+  const taskIndex = toDoList
+    .map((item) => item.toLowerCase())
+    .indexOf(taskLower);
+
   if (taskIndex !== -1) {
     toDoList.splice(taskIndex, 1);
     return `Removed ${task} from your todo.`;
@@ -73,7 +93,7 @@ function getDate() {
 }
 
 function getResult(command) {
-  const expression = command.replace("What is", "").trim();
+  const expression = command.replace(/what is/i, "").trim();
 
   let operator;
   if (expression.includes("+")) {
@@ -115,8 +135,8 @@ function getResult(command) {
 
 function setTimer(command) {
   const timeStr = command
-    .replace("Set a timer for", "")
-    .replace("minutes", "")
+    .replace(/set a timer for/i, "")
+    .replace(/minutes/i, "")
     .trim();
   const time = parseInt(timeStr);
 
@@ -147,15 +167,16 @@ function tellJokes() {
 }
 
 function getReply(command) {
+  const lowerCaseCommand = command.toLowerCase();
   for (const cmd in commands) {
-    if (command.startsWith(cmd)) {
+    if (lowerCaseCommand.startsWith(cmd)) {
       return commands[cmd](command);
     }
   }
   return "Command is not recognized.";
 }
 
-console.log(getReply("Hello my name is Benjamin"));
+console.log(getReply("hello my Name is Dennis"));
 console.log(getReply("What is my name"));
 console.log(getReply("Add fishing to my todo"));
 console.log(getReply("Add singing in the shower to my todo"));
@@ -169,3 +190,4 @@ console.log(getReply("What day is it today?"));
 console.log(getReply("What is 80 * 30"));
 console.log(getReply("Set a timer for 4 minutes"));
 console.log(getReply("Tell me a evening jokes"));
+
