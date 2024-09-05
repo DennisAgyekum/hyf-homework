@@ -53,11 +53,11 @@ CREATE TABLE Room (
 );
 
 CREATE TABLE Payment (
-    PaymentId INT PRIMARY KEY,
-    BookingId INT,
-    Amount DECIMAL(10, 2),
-    PaymentDate DATE,
-    PaymentMethod VARCHAR(50),
-    FOREIGN KEY (BookingId) REFERENCES Booking(BookingId)
+    paymentId INT PRIMARY KEY,
+    bookingId INT,
+    amount DECIMAL(10, 2),
+    paymentDate DATE,
+    paymentMethod VARCHAR(50),
+    FOREIGN KEY (bookingId) REFERENCES Booking(bookingId)
 );
 
