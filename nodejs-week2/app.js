@@ -40,19 +40,25 @@ app.get("/search", async (req, res, next) => {
     const documents = await loadDocuments();
     const query = req.query.q ? req.query.q.toLowerCase() : null;
 
-    const filteredDocuments = query
-      ? documents.filter(document =>
-          Object.values(document)
-            .map(value => String(value).toLowerCase())
-            .some(value => value.includes(query))
-        )
-      : documents;
-
+    let filteredDocuments;
+    
+    const searchFields = ["id", "name", "price", "description",];
+    if (query) {
+      filteredDocuments = documents.filter((document) => {
+        return searchFields.some((field) => {
+          const fieldValue = document[field];
+          return fieldValue && fieldValue.toLowerCase().includes(query);
+        });
+      });
+    } else {
+      filteredDocuments = documents;
+    }
     res.json(filteredDocuments);
   } catch (error) {
     next(error);
   }
 });
+
 
 // POST /search
 app.post("/search", async (req, res, next) => {
