@@ -11,6 +11,7 @@ const filePath = path.join(__dirname, "documents.json");
 
 app.use(express.json());
 
+
 // Middleware for error handling
 const errorHandler = (err, req, res, next) => {
   console.error(err.stack);
@@ -34,61 +35,58 @@ const loadDocuments = async () => {
   return cachedDocuments;
 };
 
-// GET /search
+// Function to handle filtering logic
+const filterDocuments = (documents, { q, fields }) => {
+  if (q && fields) {
+    const error = new Error("Cannot provide both query and fields");
+    error.status = 400;
+    throw error;
+  }
+
+  // Filter by query if provided
+  if (q) {
+    const query = q.toLowerCase();
+    documents = documents.filter(document =>
+      Object.values(document).some(value =>
+        String(value).toLowerCase().includes(query)
+      )
+    );
+  }
+
+  // Filter by fields if provided
+  if (fields && Object.keys(fields).length > 0) {
+    documents = documents.filter(document =>
+      Object.entries(fields).every(([key, value]) =>
+        document[key] && String(document[key]) === String(value)
+      )
+    );
+  }
+
+  return documents;
+};
+
+// GET /search endpoint
 app.get("/search", async (req, res, next) => {
   try {
-    const documents = await loadDocuments();
-    const query = req.query.q ? req.query.q.toLowerCase() : null;
+    let documents = await loadDocuments();
+    const { q } = req.query;
+    documents = filterDocuments(documents, { q, fields: null });
 
-    let filteredDocuments;
-    
-    const searchFields = ["id", "name", "price", "description",];
-    if (query) {
-      filteredDocuments = documents.filter((document) => {
-        return searchFields.some((field) => {
-          const fieldValue = document[field];
-          return fieldValue && fieldValue.toLowerCase().includes(query);
-        });
-      });
-    } else {
-      filteredDocuments = documents;
-    }
-    res.json(filteredDocuments);
+    res.json(documents);
   } catch (error) {
     next(error);
   }
 });
 
-
-// POST /search
+// POST /search endpoint
 app.post("/search", async (req, res, next) => {
   try {
     const { q } = req.query;
     const { fields } = req.body;
 
-    if (q && fields) {
-      const error = new Error("Cannot provide both query and fields");
-      error.status = 400;
-      return next(error);
-    }
-
     let documents = await loadDocuments();
 
-    if (q) {
-      documents = documents.filter(document =>
-        Object.values(document).some(value =>
-          String(value).toLowerCase().includes(q.toLowerCase())
-        )
-      );
-    }
-
-    if (fields && Object.keys(fields).length > 0) {
-      documents = documents.filter(document =>
-        Object.entries(fields).every(([key, value]) =>
-          document[key] && String(document[key]) === String(value)
-        )
-      );
-    }
+    documents = filterDocuments(documents, { q, fields });
 
     res.json(documents);
   } catch (error) {
@@ -115,12 +113,7 @@ app.get("/documents/:id", async (req, res, next) => {
   }
 });
 
-// Error-handling middleware should be defined last
-app.use(errorHandler);
 
-// Only listen on port if not in test mode
-if (process.env.NODE_ENV !== 'test') {
-  app.listen(port, () => {
-    console.log(`Listening on port ${port}`);
-  });
-}
+
+
+app.use(errorHandler);
