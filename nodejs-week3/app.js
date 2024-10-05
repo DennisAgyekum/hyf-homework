@@ -29,19 +29,29 @@ const validSortField = (field) => {
   return allowedSortFields.includes(field);
 };
 
-contactsAPIRouter.get("/", async (req, res) => {
-  try {
-    let query = knexInstance.select("*").from("contacts");
-
-    if ("sort" in req.query) {
-      const orderBy = req.query.sort.toString();
-      if (validSortField(orderBy)) {
-        query = query.orderBy(orderBy);
-      } else {
-        return res.status(400).json({ error: "Invalid sort parameter" });
+const validSortDirection = (direction) => {
+    return direction === "asc" || direction === "desc";
+  };
+  
+  contactsAPIRouter.get("/", async (req, res) => {
+    try {
+      let query = knexInstance.select("*").from("contacts");
+  
+      if ("sort" in req.query) {
+        const orderBy = req.query.sort.toString();
+        if (validSortField(orderBy)) {
+          // Default order direction to 'asc'
+          const orderDirection = req.query.order ? req.query.order.toLowerCase() : "asc";
+  
+          if (validSortDirection(orderDirection)) {
+            query = query.orderBy(orderBy, orderDirection);
+          } else {
+            return res.status(400).json({ error: "Invalid order direction. Use 'asc' or 'desc'." });
+          }
+        } else {
+          return res.status(400).json({ error: "Invalid sort parameter." });
+        }
       }
-    }
-
     // Log the SQL query for debugging (consider removing in production)
     console.log("SQL", query.toSQL().sql);
 
