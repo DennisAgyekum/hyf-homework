@@ -1,0 +1,5 @@
+[{"name":"next-dev","duration":412911,"timestamp":718180539093,"id":1,"tags":{"isTurbopack":false},"startTime":1730431499463,"traceId":"80a93241fda8a34a"}]
+[{"name":"next-dev","duration":426896,"timestamp":719253767200,"id":1,"tags":{"isTurbopack":false},"startTime":1730432572681,"traceId":"e3e65664501aae99"}]
+[{"name":"next-dev","duration":445024,"timestamp":720809407848,"id":1,"tags":{"isTurbopack":false},"startTime":1730434128308,"traceId":"0ef6c109a127888c"}]
+[{"name":"next-dev","duration":413848,"timestamp":745140892709,"id":1,"tags":{"isTurbopack":false},"startTime":1730458459745,"traceId":"a0c330050ac9a63b"}]
+[{"name":"next-dev","duration":291022,"timestamp":846060840172,"id":1,"tags":{"isTurbopack":false},"startTime":1730559379275,"traceId":"71297de647cdddfe"}]
