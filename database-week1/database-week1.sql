@@ -6,16 +6,35 @@ SELECT COUNT(*) FROM task -- 35 tasks
 SELECT COUNT(*) FROM task WHERE due_date IS NULL -- 8 tasks
 
 -- 3 task. Selects all tasks from task table where status_id is 3(Done)
-SELECT * FROM task WHERE status_id = 3 -- 12 tasks
+SELECT task.*
+FROM task
+JOIN status ON task.status_id = status.id
+WHERE status.name = 'Done'; -- 12 tasks
 
 -- 4 task. Selects all tasks from task table where status_id is not 3(Done)
-SELECT * FROM task WHERE status_id != 3 -- 23 tasks
+SELECT task.* 
+FROM task 
+JOIN status ON task.status_id = status.id 
+WHERE status.name != 'Done'; -- 23 tasks
 
 -- 5 task. Selects all tasks from task table where created is the most recent
-SELECT * FROM task ORDER BY created ASC -- 35 tasks
+SELECT t.*
+FROM task t
+JOIN (
+    SELECT DISTINCT created
+    FROM task
+    ORDER BY created DESC
+    LIMIT 5
+) AS recent_dates ON t.created = recent_dates.created
+ORDER BY t.created DESC; -- 35 tasks
 
 -- 6 task. Selects the single most recently created task
-SELECT * FROM task ORDER BY created ASC LIMIT 1; -- 1 task
+SELECT * 
+FROM task 
+WHERE created = (
+    SELECT MAX(created) 
+    FROM task
+) ; -- 1 task
 
 -- 7 task. Selects all tasks from task table where title or description contains database
 SELECT * FROM task WHERE title LIKE '%database%' OR description LIKE '%database%'; -- 5 tasks
@@ -27,5 +46,9 @@ SELECT title, status.name FROM task JOIN status ON task.status_id = status.id; -
 SELECT status.name, COUNT(*) FROM task JOIN status ON task.status_id = status.id GROUP BY status.name; -- 3 statuses
 
 -- 10 task. Gets the names of all statuses, sorted by the status with most tasks first
-SELECT status.name FROM task JOIN status ON task.status_id = status.id GROUP BY status.name ORDER BY COUNT(*) DESC; -- 3 statuses
+SELECT s.name AS status_name, COUNT(t.id) AS task_count
+FROM status s
+JOIN task t ON s.id = t.status_id
+GROUP BY  s.name
+ORDER BY COUNT(t.id) DESC; -- 3 statuses
 
