@@ -1,5 +1,7 @@
 Carrot
 Asparagus
-Broccoli
+Beetroot
 Cabbage
 Spinach
+Celery
+Kale
