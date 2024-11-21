@@ -1,5 +1,8 @@
 Carrot
 Asparagus
 Fennel
+Beetroot
 Cabbage
 Spinach
+Celery
+Kale
