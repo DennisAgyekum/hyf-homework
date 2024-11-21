@@ -1,5 +1,6 @@
 Carrot
 Asparagus
+Fennel
 Beetroot
 Cabbage
 Spinach
